@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Box } from '@react-three/drei';
-import { Activity, Code, ExternalLink, Calendar } from 'lucide-react';
+import { Activity, Code, ExternalLink, Calendar, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const RotatingCube = () => {
