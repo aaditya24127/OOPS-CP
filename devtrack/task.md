@@ -11,3 +11,10 @@
   - `[x]` Update `App.jsx` with Routing logic
   - `[x]` Refactor Sidebar for User Profile bottom widget
   - `[x]` Ensure cohesive UI/UX
+- `[x]` Supabase Integration & Profile Completion
+  - `[x]` Install `@supabase/supabase-js` missing dependency
+  - `[x]` Create Supabase SQL Migration (`supabase/migrations/20260910000000_create_profiles.sql`)
+  - `[x]` Implement Supabase Storage for profile photos
+  - `[x]` Update `Auth.jsx` to upload profile photo on Signup
+  - `[x]` Update `Profile.jsx` to fetch real profile data and upload new photos
+  - `[x]` Verify Build (`npm run build`) successfully completes without errors

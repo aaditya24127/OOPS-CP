@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Code, Github, Terminal, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, Code, Terminal } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float, Sphere, MeshDistortMaterial } from '@react-three/drei';
 
@@ -23,7 +23,7 @@ export default function Auth() {
   // Sign Up State
   const [signupData, setSignupData] = useState({
     name: '', email: '', password: '', confirmPassword: '',
-    college: '', year: '1', branch: '', phone: ''
+    college: '', year: '1', branch: '', phone: '', photo: null
   });
 
   // Redirect if already logged in
@@ -79,7 +79,22 @@ export default function Auth() {
     if (error) {
       setError(error.message);
     } else {
-      // In a real app, this would also ping the Spring Boot API to sync the user record to the DB
+      // If photo exists, upload it to Supabase storage now that user is authenticated
+      if (signupData.photo && data.user) {
+        const fileExt = signupData.photo.name.split('.').pop();
+        const filePath = `${data.user.id}/avatar.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('profiles')
+          .upload(filePath, signupData.photo);
+          
+        if (!uploadError) {
+          const { data: publicUrlData } = supabase.storage.from('profiles').getPublicUrl(filePath);
+          // Update the profiles table with the photo URL
+          await supabase.from('profiles').update({
+            profile_photo_url: publicUrlData.publicUrl
+          }).eq('id', data.user.id);
+        }
+      }
       navigate('/', { replace: true });
     }
     setLoading(false);
@@ -185,6 +200,11 @@ export default function Auth() {
                       <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.9rem' }}>Confirm Password</label>
                       <input type="password" required className="form-control" value={signupData.confirmPassword} onChange={(e) => setSignupData({...signupData, confirmPassword: e.target.value})} placeholder="••••••••" />
                     </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.9rem' }}>Profile Photo (Optional)</label>
+                    <input type="file" accept="image/*" className="form-control" onChange={(e) => setSignupData({...signupData, photo: e.target.files[0]})} />
                   </div>
 
                   <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '16px', justifyContent: 'center', height: '44px' }}>
