@@ -8,6 +8,7 @@ import Projects from './pages/Projects';
 import Achievements from './pages/Achievements';
 import ResumeBuilder from './pages/ResumeBuilder';
 import Auth from './pages/Auth';
+import AuthCallback from './pages/AuthCallback';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
@@ -116,8 +117,9 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Route */}
+          {/* Public Routes */}
           <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Protected Routes wrapped in Layout */}
           <Route element={<ProtectedRoute />}>
