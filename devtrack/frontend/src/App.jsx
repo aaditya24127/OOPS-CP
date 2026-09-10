@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { LayoutDashboard, Code2, FolderGit2, Trophy, FileText, Briefcase, Settings, Plus, LogOut } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
@@ -109,7 +109,6 @@ const DashboardLayout = () => {
 };
 
 // Small wrapper to export routes
-import { Outlet } from 'react-router-dom';
 const OutletWrapper = () => <Outlet />;
 
 function App() {
